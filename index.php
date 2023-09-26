@@ -20,6 +20,6 @@
   $numero = 'xxxxx';
   $data = "token=$token&numero=$numero&formato=JSON";
 
-  $response = sendRequest('https://api.tiny.com.br/api2/pedidos.pesquisa.php', $data);
+  $response = sendRequest('https://api.tiny.com.br/api2/info.php', $data);
   pre($response);
 ?>
