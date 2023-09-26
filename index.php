@@ -1,3 +1,5 @@
+<?php include 'functions.php';?>
+
 <?php
   function foo() {
     echo('lalal');
@@ -11,7 +13,13 @@
 <p>Test Eduardo</p>
 
 <?php
-
   echo("Hello world");
-  pre(getenv('API_KEY'));
+  pre(getenv('TOKEN'));
+
+  $token = getenv('TOKEN');
+  $numero = 'xxxxx';
+  $data = "token=$token&numero=$numero&formato=JSON";
+
+  $response = sendRequest('https://api.tiny.com.br/api2/pedidos.pesquisa.php', $data);
+  pre($response);
 ?>
