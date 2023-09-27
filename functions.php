@@ -1,8 +1,10 @@
 <?php
-  function sendRequest($url, $data, $optional_headers = null) {
+  function sendRequest($url, $data = null, $optional_headers = null) {
+    $token = getenv('TOKEN');
+
     $params = array('http' => array(
       'method' => 'POST',
-        'content' => $data
+        'content' => "token=$token&formato=JSON&".$data
     ));
 
     if ($optional_headers !== null) {
@@ -25,7 +27,7 @@
     return $response;
   }
 
-  function pre($variable) {
-    print("<pre>".print_r($variable,true)."</pre>");
+  function pre($data) {
+    print("<pre>".print_r($data, true)."</pre>");
   }
 ?>
