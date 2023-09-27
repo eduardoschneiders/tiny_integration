@@ -24,4 +24,8 @@
 
     return $response;
   }
+
+  function pre($variable) {
+    print("<pre>".print_r($variable,true)."</pre>");
+  }
 ?>
