@@ -24,7 +24,7 @@
       throw new Exception("Problema obtendo retorno de $url, $php_errormsg");
     }
 
-    return $response;
+    return json_decode($response);
   }
 
   function pre($data) {
