@@ -46,4 +46,8 @@
   function pre($data) {
     print("<pre>".print_r($data, true)."</pre>");
   }
+
+  function compare($a, $b) {
+    return ($a->item->nome < $b->item->nome) ? -1 : 1;
+  }
 ?>

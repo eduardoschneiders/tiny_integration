@@ -31,13 +31,15 @@
     foreach($items as $item){
       $data = "id={$item->item->id_produto}";
       $response = sendRequest('https://api.tiny.com.br/api2/produto.obter.estrutura.php', $data);
+      $components = $response->retorno->produto;
+      uasort($components, 'compare');
 
-      foreach($response->retorno->produto as $component) {
-        $total = $component->item->quantidade * $item->item->quantidade;
+      foreach($components as $component) {
+        $component_total = $component->item->quantidade * $item->item->quantidade;
 
         echo "<tr>";
           echo "<td>{$component->item->nome}</td>";
-          echo "<td>{$component->item->quantidade} * {$item->item->quantidade} = {$total}</td>";
+          echo "<td>{$component_total}</td>";
         echo "</tr>";
       }
     }
