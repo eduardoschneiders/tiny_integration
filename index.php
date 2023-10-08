@@ -1,13 +1,13 @@
-<?php include 'functions.php';?>
+<?php include 'header.php' ?>
 
-<table border="1">
+<table class="table table-striped">
   <tr>
     <th>Numero</th>
-    <th>Data_Pedido</th>
-    <th>Data_Prevista</th>
+    <th>Data Pedido</th>
+    <th>Data Prevista</th>
     <th>Nome</th>
     <th>Valor</th>
-    <th>Numero_Ecommerce</th>
+    <th>Numero Ecommerce</th>
   </tr>
 
   <?php
@@ -25,9 +25,3 @@
     }
   ?>
 </table>
-
-<style>
-  th {
-    text-align: left;
-  }
-</style>

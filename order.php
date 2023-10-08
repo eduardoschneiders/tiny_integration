@@ -1,8 +1,14 @@
-<?php include 'functions.php';?>
+<?php include 'header.php';?>
 
 <?php
   $data = "id={$_GET['id']}";
   $response = sendRequest('https://api.tiny.com.br/api2/pedido.obter.php', $data);
+
+  if ($response->retorno->status_processamento != 3){
+    echo "Problema na API";
+    pre($response);
+    die();
+  }
 
   $grouped_items = [];
 
@@ -21,7 +27,7 @@
   foreach($grouped_items as $name => $items){
     echo "<br><br><b>Product: {$name}</b><br>";
     echo "
-      <table border=\"1\">
+      <table class=\"table table-striped\">
         <tr>
           <th>Item</th>
           <th>Quantidade</th>
@@ -31,8 +37,17 @@
     foreach($items as $item){
       $data = "id={$item->item->id_produto}";
       $response = sendRequest('https://api.tiny.com.br/api2/produto.obter.estrutura.php', $data);
-      $components = $response->retorno->produto;
+      // pre($response->retorno);
+
+      if ($response->retorno->status_processamento != '3'){
+        continue;
+      }
+
+      $components = (array) $response->retorno->produto;
+
+
       uasort($components, 'compare');
+
 
       foreach($components as $component) {
         $component_total = $component->item->quantidade * $item->item->quantidade;
@@ -47,9 +62,3 @@
     echo "</table>";
   }
 ?>
-
-<style>
-  th {
-    text-align: left;
-  }
-</style>
