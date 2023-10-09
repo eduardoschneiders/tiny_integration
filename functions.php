@@ -1,6 +1,20 @@
 <?php
-  function sendRequest($url, $data = null, $optional_headers = null) {
+  function api_request($url, $data = null) {
+    if($cache = fetch_cache($url, $data)) {
+      return $cache;
+    }
 
+    $response = api_call($url, $data);
+
+    if ($response->retorno->status_processamento == '1'){
+      api_request($url, $data);
+    }
+
+    store_cache($url, $data, $response);
+    return $response;
+  }
+
+  function fetch_cache($url, $data) {
     $host = explode('/', $url);
     $domain = end($host);
 
@@ -9,7 +23,18 @@
     if(is_file($cache_file)){
       return json_decode(file_get_contents($cache_file));
     }
+  }
 
+  function store_cache($url, $data, $response) {
+    $host = explode('/', $url);
+    $domain = end($host);
+
+    $cache_file = "cache_files/{$domain}?{$data}";
+
+    file_put_contents($cache_file, json_encode($response));
+  }
+
+  function api_call($url, $data, $optional_headers = null) {
     $token = getenv('TOKEN');
 
     $params = array('http' => array(
@@ -34,10 +59,6 @@
 
     if ($response === false) {
       throw new Exception("Problema obtendo retorno de $url, $php_errormsg");
-    }
-
-    if(json_decode($response)->retorno->status_processamento == '3'){
-      file_put_contents($cache_file, $response);
     }
 
     return json_decode($response);

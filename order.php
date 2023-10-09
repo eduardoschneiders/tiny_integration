@@ -2,7 +2,7 @@
 
 <?php
   $data = "id={$_GET['id']}";
-  $response = sendRequest('https://api.tiny.com.br/api2/pedido.obter.php', $data);
+  $response = api_request('https://api.tiny.com.br/api2/pedido.obter.php', $data);
 
   if ($response->retorno->status_processamento != 3){
     echo "Problema na API";
@@ -36,7 +36,7 @@
 
     foreach($items as $item){
       $data = "id={$item->item->id_produto}";
-      $response = sendRequest('https://api.tiny.com.br/api2/produto.obter.estrutura.php', $data);
+      $response = api_request('https://api.tiny.com.br/api2/produto.obter.estrutura.php', $data);
       // pre($response->retorno);
 
       if ($response->retorno->status_processamento != '3'){

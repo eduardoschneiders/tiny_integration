@@ -11,7 +11,7 @@
   </tr>
 
   <?php
-    $response = sendRequest('https://api.tiny.com.br/api2/pedidos.pesquisa.php');
+    $response = api_request('https://api.tiny.com.br/api2/pedidos.pesquisa.php');
 
     foreach($response->retorno->pedidos as $order){
       echo "<tr>";
