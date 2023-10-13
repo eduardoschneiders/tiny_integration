@@ -3,8 +3,11 @@
 <?php
   $page = $_GET['page'] ?? 1;
   $number = $_GET['number'] ?? null;
+  $client_name = $_GET['client_name'] ?? null;
+
   $params = "pagina={$page}";
   $params .= $number ? ('&numero=' . $number) : '';
+  $params .= $client_name ? ('&cliente=' . $client_name) : '';
 
   $response = api_request('https://api.tiny.com.br/api2/pedidos.pesquisa.php', $params);
 
@@ -58,6 +61,14 @@
           <div class="col-auto">
             <input type="text" id="number" name="number" class="form-control" value="<?= $number ?>">
           </div>
+
+          <div class="col-auto">
+            <label for="number" class="col-form-label">Nome Cliente</label>
+          </div>
+          <div class="col-auto">
+            <input type="text" id="client_name" name="client_name" class="form-control" value="<?= $client_name ?>">
+          </div>
+
           <div class="col-auto">
             <span class="form-text">
               <button type="submit" class="btn btn-primary">Search</button>
@@ -67,7 +78,7 @@
       </form>
     </li>
 
-    <li class="page-item me-2 <?= (!$number) ? 'disabled' : '' ?>">
+    <li class="page-item me-2 <?= (!$number && !$client_name) ? 'disabled' : '' ?>">
       <a class="page-link" href="index.php">Clear Search</a>
     </li>
   </ul>
