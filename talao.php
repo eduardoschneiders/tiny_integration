@@ -37,7 +37,6 @@
     foreach($items as $item){
       $data = "id={$item->item->id_produto}";
       $response = api_request('https://api.tiny.com.br/api2/produto.obter.estrutura.php', $data);
-      // pre($response->retorno);
 
       if ($response->retorno->status_processamento != '3'){
         continue;
