@@ -42,7 +42,7 @@
   ?>
 </table>
 
-<nav aria-label="Page navigation example">
+<nav class="my-4" aria-label="Page navigation example">
   <ul class="pagination">
     <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
       <a class="page-link" href="?page=<?php echo $page - 1?>">Previous</a>
