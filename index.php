@@ -1,5 +1,20 @@
 <?php include 'header.php' ?>
 
+<?php
+  $page = $_GET['page'] ?? 1;
+  $number = $_GET['number'] ?? null;
+  $params = "pagina={$page}";
+  $params .= $number ? ('&numero=' . $number) : '';
+
+  $response = api_request('https://api.tiny.com.br/api2/pedidos.pesquisa.php', $params);
+
+  if ($response->retorno->status_processamento != 3){
+    echo "Problema na API";
+    pre($response);
+    die();
+    }
+?>
+
 <table class="table table-striped">
   <tr>
     <th>Numero</th>
@@ -11,9 +26,6 @@
   </tr>
 
   <?php
-    $page = $_GET['page'] ?? 1;
-    $response = api_request('https://api.tiny.com.br/api2/pedidos.pesquisa.php', "pagina={$page}");
-
     foreach($response->retorno->pedidos as $order){
       echo "<tr>";
         echo "<td><a href=\"talao.php?id={$order->pedido->id}\"> {$order->pedido->numero} </a></td>";
@@ -32,8 +44,31 @@
     <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
       <a class="page-link" href="?page=<?php echo $page - 1?>">Previous</a>
     </li>
+
     <li class="page-item me-2 <?= ($response->retorno->numero_paginas == $page) ? 'disabled' : '' ?>">
       <a class="page-link" href="?page=<?php echo $page + 1?>">Next</a>
+    </li>
+
+    <li class="page-item">
+      <form action="index.php" method="get">
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            <label for="number" class="col-form-label">Number</label>
+          </div>
+          <div class="col-auto">
+            <input type="text" id="number" name="number" class="form-control" value="<?= $number ?>">
+          </div>
+          <div class="col-auto">
+            <span class="form-text">
+              <button type="submit" class="btn btn-primary">Search</button>
+            </span>
+          </div>
+        </div>
+      </form>
+    </li>
+
+    <li class="page-item me-2 <?= (!$number) ? 'disabled' : '' ?>">
+      <a class="page-link" href="index.php">Clear Search</a>
     </li>
   </ul>
 </nav>
