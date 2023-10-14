@@ -1,5 +1,9 @@
 <?php include 'header.php' ?>
 
+<head>
+  <title>Listagem de Pedidos</title>
+</head>
+
 <?php
   $page = $_GET['page'] ?? 1;
   $number = $_GET['number'] ?? null;

@@ -1,5 +1,9 @@
 <?php include 'header.php';?>
 
+<head>
+  <title>Talão pedido <?= $_GET['id'] ?></title>
+</head>
+
 <?php
   $data = "id={$_GET['id']}";
   $response = api_request('https://api.tiny.com.br/api2/pedido.obter.php', $data);
