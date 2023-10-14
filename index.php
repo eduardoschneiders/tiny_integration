@@ -18,25 +18,23 @@
     }
 ?>
 
-<table class="table table-striped">
+<table class="table align-middle">
   <tr>
-    <th>Numero</th>
-    <th>Data Pedido</th>
-    <th>Data Prevista</th>
-    <th>Nome</th>
-    <th>Valor</th>
-    <th>Numero Ecommerce</th>
+    <th>Número do Pedido</th>
+    <th>Cliente</th>
+    <th>Total de Pares</th>
+    <th>Talões</th>
+    <th>Romaneio</th>
   </tr>
 
   <?php
     foreach($response->retorno->pedidos as $order){
       echo "<tr>";
-        echo "<td><a href=\"talao.php?id={$order->pedido->id}\"> {$order->pedido->numero} </a></td>";
-        echo "<td><a href=\"talao.php?id={$order->pedido->id}\"> {$order->pedido->data_pedido} </a></td>";
-        echo "<td><a href=\"talao.php?id={$order->pedido->id}\"> {$order->pedido->data_prevista} </a></td>";
-        echo "<td><a href=\"talao.php?id={$order->pedido->id}\"> {$order->pedido->nome} </a></td>";
-        echo "<td><a href=\"talao.php?id={$order->pedido->id}\"> {$order->pedido->valor} </a></td>";
-        echo "<td><a href=\"talao.php?id={$order->pedido->id}\"> {$order->pedido->numero_ecommerce} </a></td>";
+        echo "<td> {$order->pedido->numero} </td>";
+        echo "<td>{$order->pedido->nome} </td>";
+        echo "<td>10</td>";
+        echo '<td><a href="talao.php?id=' . $order->pedido->id . '" class="btn btn-outline-success">Talões</a></td>';
+        echo '<td><a href="romaneio.php?id=' . $order->pedido->id . '" class="btn btn-outline-primary">Romaneio</a></td>';
       echo "</tr>";
     }
   ?>
