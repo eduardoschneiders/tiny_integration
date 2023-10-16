@@ -27,22 +27,6 @@
   }
 ?>
 
-<table class="table align-middle">
-  <tr>
-    <th>Número do Pedido</th>
-    <th>Cliente</th>
-    <th>Data do Pedido</th>
-    <th>Previsão</th>
-  </tr>
-  <tr>
-    <td><?= $response->retorno->pedido->numero ?></td>
-    <td><?= $response->retorno->pedido->cliente->nome ?></td>
-    <td><?= $response->retorno->pedido->data_pedido ?></td>
-    <td><?= $response->retorno->pedido->data_prevista ?></td>
-  </tr>
-</table>
-
-
 <?php
   $talao_index = 0;
   $total_talao = count($grouped_products);
@@ -52,7 +36,7 @@
       <table class=\"table table-bordered\">
         <tr>
           <th>
-            Referenca:
+            Referencia:
           </th>
 
           <td width=\"700px\">
@@ -65,6 +49,40 @@
 
           <td>
             " . ++$talao_index . "/" . $total_talao . "
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Cliente:
+          </th>
+
+          <td width=\"700px\">
+            {$response->retorno->pedido->cliente->nome}
+          </td>
+
+          <th>
+            Número do pedido:
+          </th>
+
+          <td>
+            {$response->retorno->pedido->numero}
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Data do Pedido:
+          </th>
+
+          <td width=\"700px\">
+            {$response->retorno->pedido->data_pedido}
+          </td>
+
+          <th>
+            Previsão:
+          </th>
+
+          <td>
+            {$response->retorno->pedido->data_prevista}
           </td>
         </tr>
         <tr>
