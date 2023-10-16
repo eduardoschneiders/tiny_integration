@@ -44,8 +44,10 @@
 
 
 <?php
+  $talao_index = 0;
+  $total_talao = count($grouped_products);
+
   foreach($grouped_products as $product_name => $products){
-    // pre($products);
     echo "
       <table class=\"table table-bordered\">
         <tr>
@@ -58,11 +60,11 @@
           </td>
 
           <th>
-            Talão
+            Talão:
           </th>
 
           <td>
-            1/2
+            " . ++$talao_index . "/" . $total_talao . "
           </td>
         </tr>
         <tr>
@@ -119,10 +121,12 @@ function components($products = []){
 
   $text = "";
   foreach($grouped_components as $name => $total){
+    $parsed_total = strpos($total, '.') !== false ? number_format($total, 4, '.', '') : $total;
+
     $text .= "
       <tr>
         <td>{$name}</td>
-        <td>{$total}</td>
+        <td>{$parsed_total}</td>
       </tr>
     ";
   }
