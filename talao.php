@@ -103,7 +103,7 @@
 
         <tr>
           <th>Observações:</th>
-          <td colspan=\"3\">Observações</td>
+          <td colspan=\"3\">{$response->retorno->pedido->obs}</td>
         </tr>
       </table>
 
