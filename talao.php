@@ -129,6 +129,10 @@ function components($products = []){
     uasort($components, 'compare');
 
     foreach ($components as $component) {
+      if (strpos($component->item->nome, 'SOLA') !== false){
+        continue;
+      }
+
       if (!array_key_exists($component->item->nome, $grouped_components)){
         $grouped_components[$component->item->nome] = 0;
       }
