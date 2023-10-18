@@ -16,22 +16,21 @@
 ?>
 
 <?php
-  $sizes = array('36/37', '38/39', '40/41', '42/43');
+  $products = [];
+  $sizes = [];
 
-  $products = array(
-    'Chinelo Slide XN Bike Indoor - Branco' => array(
-      '36/37' => 1,
-      '38/39' => 5,
-      '40/41' => 22,
-      '42/43' => 1,
-    ),
-    'Chinelo Slide XN Bike Indoor - Preto' => array(
-      '36/37' => 1,
-      '38/39' => 3,
-      '40/41' => 1,
-      '42/43' => 4,
-    )
-  );
+  foreach ($response->retorno->pedido->itens as $item) {
+    $cleaned_name = preg_replace('/ -\s+\d+\/\d+/', '', $item->item->descricao);
+    preg_match('/\d{2}\/\d{2}$/', $item->item->descricao, $matches);
+    if (count($matches) == 0){
+      continue;
+    }
+    $number = $matches[0];
+    array_push($sizes, $number);
+    $products[$cleaned_name][$number] = (int)$item->item->quantidade;
+  }
+
+  $sizes = array_unique($sizes)
 ?>
 
 <?php
@@ -48,44 +47,117 @@
   $total_box_count = ceil($total_box_count / $MAX_BOX_COUNT);
 
   while(count($products) > 0){
-    echo 'building box: ' . ++$box_index . "/{$total_box_count}";
+
+    echo "
+      <table class=\"table table-bordered\">
+        <tr>
+          <th>
+            Pedido:
+          </th>
+
+          <td width=\"700px\">
+            {$response->retorno->pedido->numero}
+          </td>
+
+          <th>
+            Cliente:
+          </th>
+
+          <td>
+            {$response->retorno->pedido->cliente->nome}
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan=\"4\">
+            <table class=\"table table-bordered\">
+              <tr>
+               " . referencies_header($sizes) . "
+              </tr>
+    ";
     $current_box_count = 0;
 
     while (count($products) > 0 && $current_box_count < $MAX_BOX_COUNT) {
       $product_name = array_key_first($products);
       $product = $products[$product_name];
 
-      echo "<p> Starting row: {$product_name} </p>";
+      echo "
+        <tr>
+          <td>{$product_name}</td>
+      ";
+
+
       $completed_product = true;
 
       foreach ($sizes as $size) {
         $available_slots = $MAX_BOX_COUNT - $current_box_count;
 
-        if ($product[$size] > $available_slots) {
-          $left = $product[$size] - $available_slots;
-          $current_count = $product[$size] - $left;
+        if(array_key_exists($size, $product)){
+          if ($product[$size] > $available_slots) {
+            $left = $product[$size] - $available_slots;
+            $current_count = $product[$size] - $left;
+          } else {
+            $left = 0;
+            $current_count = $product[$size];
+          }
+
+          $products[$product_name][$size] = $left;
+          $product[$size] = $left;
+
+          if ($left > 0) {
+            $completed_product = false;
+          }
+
+          $current_box_count += $current_count;
+          echo "<td>{$current_count}</td>";
         } else {
-          $left = 0;
-          $current_count = $product[$size];
+          echo "<td>0</td>";
         }
-
-        $products[$product_name][$size] = $left;
-        $product[$size] = $left;
-
-        if ($left > 0) {
-          $completed_product = false;
-        }
-
-        $current_box_count += $current_count;
-        echo "<p> Row: size: {$size}, current_count:  {$current_count} </p>";
       }
 
 
       if ($completed_product){
         unset($products[$product_name]);
       }
+
+      echo "
+        </tr>
+      ";
     }
 
-    echo "<p>Total of the Box: {$current_box_count}</p>";
+    echo "
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <th>Volume</th>
+          <td>" . ++$box_index . "/{$total_box_count}</td>
+          <th>Total de pares</th>
+          <td>{$current_box_count}</td>
+        </tr>
+      </table>
+
+      <hr class=\"my-5\">
+    ";
+  }
+?>
+
+<?php
+  function referencies_header($sizes) {
+    $text = "
+      <th>
+        Referencia:
+      </th>";
+
+    foreach($sizes as $size) {
+      $text .= "
+        <th>
+          {$size}
+        </th>
+      ";
+    }
+
+    return $text;
   }
 ?>
