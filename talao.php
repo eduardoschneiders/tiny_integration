@@ -32,6 +32,19 @@
   $total_talao = count($grouped_products);
 
   foreach($grouped_products as $product_name => $products){
+    $sizes = [];
+
+    foreach ($products as $product) {
+      preg_match('/\d{2}\/\d{2}$/', $product->item->descricao, $matches);
+
+      if (count($matches) == 0){
+        continue;
+      }
+
+      $number = $matches[0];
+      $sizes[$number] = (int)$product->item->quantidade;
+    }
+
     echo "
       <table class=\"table table-bordered\">
         <tr>
@@ -68,6 +81,7 @@
             {$response->retorno->pedido->numero}
           </td>
         </tr>
+
         <tr>
           <th>
             Data do Pedido:
@@ -85,6 +99,15 @@
             {$response->retorno->pedido->data_prevista}
           </td>
         </tr>
+
+        <tr>
+          <td colspan=\"4\">
+            <table class=\"table table-bordered\">
+              " . sizes($sizes) . "
+            </table>
+          </td>
+        </tr>
+
         <tr>
           <td colspan=\"4\">
             <table class=\"table table-bordered\">
@@ -152,6 +175,42 @@ function components($products = []){
       </tr>
     ";
   }
+
+  return $text;
+}
+
+function sizes($sizes) {
+  $text = '';
+
+  $text .= '<tr>';
+
+  foreach($sizes as $size => $quantity) {
+    $text .= "
+      <th>{$size}</th>
+    ";
+  }
+
+  $text .= "
+    <th>Total</th>
+  ";
+
+  $text .= '</tr>';
+
+  $text .= '<tr>';
+
+  $total = 0;
+  foreach($sizes as $size => $quantity) {
+    $total += $quantity;
+    $text .= "
+      <td>{$quantity} pares</td>
+    ";
+  }
+
+  $text .= "
+    <td>{$total} pares</td>
+  ";
+
+  $text .= '</tr>';
 
   return $text;
 }
