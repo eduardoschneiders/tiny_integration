@@ -129,7 +129,7 @@ function components($products = []){
     uasort($components, 'compare');
 
     foreach ($components as $component) {
-      if (strpos($component->item->nome, 'SOLA') !== false){
+      if (strpos((string)$component->item->nome, 'SOLA') !== false){
         continue;
       }
 
