@@ -49,7 +49,7 @@
   while(count($products) > 0){
 
     echo "
-      <table class=\"table table-bordered\">
+      <table class=\"table table-bordered \" style=\"break-inside: avoid;\">
         <tr>
           <th>
             Pedido:
