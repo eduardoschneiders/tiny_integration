@@ -1,7 +1,10 @@
 <?php include 'functions.php';?>
 
 <?php
-  if (!isset($_SERVER['PHP_AUTH_USER']) || ($_SERVER['PHP_AUTH_USER'] !== 'user' || $_SERVER['PHP_AUTH_PW'] !== 'pass')) {
+  if (
+    !isset($_SERVER['HTTP_AUTHORIZATION']) ||
+    base64_decode(str_replace('Basic ', '', $_SERVER['HTTP_AUTHORIZATION'])) != 'user:password'
+  ) {
     header('WWW-Authenticate: Basic realm="My Realm"');
     header('HTTP/1.0 401 Unauthorized');
 
