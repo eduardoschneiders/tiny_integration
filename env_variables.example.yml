@@ -1,0 +1,4 @@
+env_variables:
+  TOKEN: TOKEN
+  DISPLAY_ERRORS: '1'  # Display PHP errors
+  ERROR_REPORTING: 'E_ALL'

@@ -1,0 +1,11 @@
+runtime: php83
+
+instance_class: F1
+includes:
+  - env_variables.yml
+
+handlers:
+- url: /talao\.html
+  script: talao.php
+# - url: /(.+\.php)$
+#   script: \1
