@@ -11,7 +11,7 @@ Order example: http://localhost:8000/order.php?id=735217815
 
 
 ### Gcloud deploy
-- rename env_variables.example.yml to env_variables.yml.
+- rename `env_variables.example.yml` to `env_variables.yml`.
 - replace the TOKEN
 
 - `gcloud app deploy`
