@@ -14,5 +14,6 @@ Order example: http://localhost:8000/order.php?id=735217815
 - rename env_variables.example.yml to env_variables.yml.
 - replace the TOKEN
 
-gcloud app deploy
-gcloud app browser
+- `gcloud app deploy`
+
+- `gcloud app browser`
