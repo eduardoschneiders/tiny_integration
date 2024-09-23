@@ -1,4 +1,5 @@
 env_variables:
   TOKEN: TOKEN
+  EXPIRE_CACHE: 60
   DISPLAY_ERRORS: '1'  # Display PHP errors
   ERROR_REPORTING: 'E_ALL'

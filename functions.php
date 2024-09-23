@@ -20,7 +20,7 @@
 
     $cache_file = "cache_files/{$domain}?{$data}";
 
-    if(is_file($cache_file)){
+    if(!is_expired($cache_file) && is_file($cache_file)){
       return json_decode(file_get_contents($cache_file));
     }
   }
@@ -32,6 +32,16 @@
     $cache_file = "cache_files/{$domain}?{$data}";
 
     file_put_contents($cache_file, json_encode($response));
+  }
+
+  function is_expired($filename) {
+    if (!is_file($filename)){
+      return true;
+    }
+
+    $diff = time() - filemtime($filename);
+
+    return $diff >= (getenv('EXPIRE_CACHE') ? getenv('EXPIRE_CACHE') : 60);
   }
 
   function api_call($url, $data, $optional_headers = null) {
