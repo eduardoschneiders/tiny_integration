@@ -15,6 +15,10 @@
   }
 ?>
 
+<h1>Romaneio pedido <?= $response->retorno->pedido->numero ?></h1>
+<a href="javascript:history.back()" class="btn btn-outline-success">Voltar</a>
+<a href="talao.php?id=<?= $_GET['id'] ?>" class="btn btn-outline-success">Talão</a>
+
 <?php
   $products = [];
   $sizes = [];
@@ -32,6 +36,10 @@
 
   $sizes = array_unique($sizes)
 ?>
+
+<h7>Quantidade produtos: <?= count($products) ?></h7>
+
+<hr>
 
 <?php
   $MAX_BOX_COUNT = 24;

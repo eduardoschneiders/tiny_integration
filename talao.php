@@ -27,6 +27,14 @@
   }
 ?>
 
+<h1>Talão pedido <?= $response->retorno->pedido->numero ?></h1>
+<a href="javascript:history.back()" class="btn btn-outline-success">Voltar</a>
+<a href="romaneio.php?id=<?= $_GET['id'] ?>" class="btn btn-outline-success">Romaneio</a>
+
+<h7>Agrupamentos de produtos: <?= count($grouped_products) ?></h7>
+
+<hr>
+
 <?php
   $talao_index = 0;
   $total_talao = count($grouped_products);
