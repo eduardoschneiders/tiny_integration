@@ -5,7 +5,8 @@ includes:
   - env_variables.yml
 
 handlers:
-- url: /talao\.html
-  script: talao.php
+- url: /favicon.ico
+  static_files: favicon.ico
+  upload: favicon.ico
 # - url: /(.+\.php)$
 #   script: \1

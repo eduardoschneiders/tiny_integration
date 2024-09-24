@@ -1,7 +1,3 @@
-<head>
-  <link rel=”icon” type=”image/x-icon” href=”/path/to/favicon.ico”>
-</head>
-
 <?php
   switch (@parse_url($_SERVER['REQUEST_URI'])['path']) {
     case '/':
