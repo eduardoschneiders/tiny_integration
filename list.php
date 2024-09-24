@@ -22,6 +22,48 @@
     }
 ?>
 
+<nav class="my-4" aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
+      <a class="page-link" href="?page=<?php echo $page - 1?>">Previous</a>
+    </li>
+
+    <li class="page-item me-2 <?= ($response->retorno->numero_paginas == $page) ? 'disabled' : '' ?>">
+      <a class="page-link" href="?page=<?php echo $page + 1?>">Next</a>
+    </li>
+
+    <li class="page-item">
+      <form action="list.php" method="get">
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            <label for="number" class="col-form-label">Number</label>
+          </div>
+          <div class="col-auto">
+            <input type="text" id="number" name="number" class="form-control" value="<?= $number ?>">
+          </div>
+
+          <div class="col-auto">
+            <label for="number" class="col-form-label">Nome Cliente</label>
+          </div>
+          <div class="col-auto">
+            <input type="text" id="client_name" name="client_name" class="form-control" value="<?= $client_name ?>">
+          </div>
+
+          <div class="col-auto">
+            <span class="form-text">
+              <button type="submit" class="btn btn-primary">Search</button>
+            </span>
+          </div>
+        </div>
+      </form>
+    </li>
+
+    <li class="page-item me-2 <?= (!$number && !$client_name) ? 'disabled' : '' ?>">
+      <a class="page-link" href="list.php">Clear Search</a>
+    </li>
+  </ul>
+</nav>
+
 <table class="table align-middle">
   <tr>
     <th>Número do Pedido</th>
@@ -55,7 +97,7 @@
     </li>
 
     <li class="page-item">
-      <form action="index.php" method="get">
+      <form action="list.php" method="get">
         <div class="row g-3 align-items-center">
           <div class="col-auto">
             <label for="number" class="col-form-label">Number</label>
@@ -81,7 +123,7 @@
     </li>
 
     <li class="page-item me-2 <?= (!$number && !$client_name) ? 'disabled' : '' ?>">
-      <a class="page-link" href="index.php">Clear Search</a>
+      <a class="page-link" href="list.php">Clear Search</a>
     </li>
   </ul>
 </nav>
