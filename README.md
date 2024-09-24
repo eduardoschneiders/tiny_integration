@@ -4,6 +4,7 @@
 `TOKEN=some-random-key EXPIRE_CACHE=10 php -S localhost:8000`
 
 ### API docs
+https://tiny.com.br/api-docs/
 https://tiny.com.br/api-docs/api2-info
 
 
