@@ -43,7 +43,7 @@
     $sizes = [];
 
     foreach ($products as $product) {
-      preg_match('/\d{2}\/\d{2}$/', $product->item->descricao, $matches);
+      preg_match('/\d{2}\/\d{2}/', $product->item->descricao, $matches);
 
       if (count($matches) == 0){
         continue;

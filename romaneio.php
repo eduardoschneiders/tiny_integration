@@ -25,7 +25,8 @@
 
   foreach ($response->retorno->pedido->itens as $item) {
     $cleaned_name = preg_replace('/ -\s+\d+\/\d+/', '', $item->item->descricao);
-    preg_match('/\d{2}\/\d{2}$/', $item->item->descricao, $matches);
+    preg_match('/\d{2}\/\d{2}/', $item->item->descricao, $matches);
+
     if (count($matches) == 0){
       continue;
     }
