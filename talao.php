@@ -31,7 +31,11 @@
 <a href="javascript:history.back()" class="btn btn-outline-success">Voltar</a>
 <a href="romaneio.php?id=<?= $_GET['id'] ?>" class="btn btn-outline-success">Romaneio</a>
 
-<h7>Agrupamentos de produtos: <?= count($grouped_products) ?></h7>
+<?php
+  if (count($grouped_products) == 0) {
+    echo "<h7>Agrupamentos de produtos:" . count($grouped_products) . "</h7>";
+  }
+?>
 
 <hr>
 

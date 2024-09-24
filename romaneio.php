@@ -38,7 +38,11 @@
   $sizes = array_unique($sizes)
 ?>
 
-<h7>Quantidade produtos: <?= count($products) ?></h7>
+<?php
+  if (count($products) == 0) {
+    echo "<h7>Quantidade produtos:" . count($products) . "</h7>";
+  }
+?>
 
 <hr>
 
