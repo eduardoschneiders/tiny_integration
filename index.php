@@ -3,6 +3,9 @@
     case '/':
       require 'list.php';
       break;
+    case '/list.php':
+      require 'list.php';
+      break;
     case '/talao.php':
       require 'talao.php';
       break;
