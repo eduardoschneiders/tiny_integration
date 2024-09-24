@@ -81,7 +81,7 @@
       </form>
     </li>
 
-    <li class="page-item me-2 <?= (!$number && !$client_name) ? 'disabled' : '' ?>">
+    <li class="page-item me-2 <?= (!$number && !$client_name && !$situacao) ? 'disabled' : '' ?>">
       <a class="page-link" href="list.php">Clear Search</a>
     </li>
   </ul>
@@ -92,7 +92,6 @@
     <th>Pedido</th>
     <th>Cliente</th>
     <th>Status</th>
-    <th>Total de Pares</th>
     <th></th>
     <th></th>
   </tr>
@@ -103,7 +102,6 @@
         echo "<td> {$order->pedido->numero} </td>";
         echo "<td>{$order->pedido->nome} </td>";
         echo "<td>{$order->pedido->situacao} </td>";
-        echo "<td>10</td>";
         echo '<td><a href="talao.php?id=' . $order->pedido->id . '" class="btn btn-outline-success">Talões</a></td>';
         echo '<td><a href="romaneio.php?id=' . $order->pedido->id . '" class="btn btn-outline-primary">Romaneio</a></td>';
       echo "</tr>";
@@ -165,7 +163,7 @@
       </form>
     </li>
 
-    <li class="page-item me-2 <?= (!$number && !$client_name) ? 'disabled' : '' ?>">
+    <li class="page-item me-2 <?= (!$number && !$client_name && !$situacao) ? 'disabled' : '' ?>">
       <a class="page-link" href="list.php">Clear Search</a>
     </li>
   </ul>
