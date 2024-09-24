@@ -10,6 +10,7 @@
   $client_name = $_GET['client_name'] ?? null;
 
   $params = "pagina={$page}";
+  $params .= "&sort=DESC";
   $params .= $number ? ('&numero=' . $number) : '';
   $params .= $client_name ? ('&cliente=' . $client_name) : '';
 
