@@ -30,11 +30,11 @@
 <nav class="my-4" aria-label="Page navigation example">
   <ul class="pagination">
     <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
-      <a class="page-link" href="?page=<?php echo $page - 1?>">Previous</a>
+      <a class="page-link" href="?page=<?php echo $page - 1?>">Anterior</a>
     </li>
 
     <li class="page-item me-2 <?= ($response->retorno->numero_paginas == $page) ? 'disabled' : '' ?>">
-      <a class="page-link" href="?page=<?php echo $page + 1?>">Next</a>
+      <a class="page-link" href="?page=<?php echo $page + 1?>">Próximo</a>
     </li>
 
     <li class="page-item">
@@ -44,7 +44,7 @@
             <label for="number" class="col-form-label">Numero</label>
           </div>
           <div class="col-auto">
-            <input type="text" id="number" name="number" class="form-control" value="<?= $number ?>">
+            <input type="text" id="number" name="number" class="form-control" value="<?= $number ?>" style="width: 80px" >
           </div>
 
           <div class="col-auto">
@@ -82,7 +82,7 @@
     </li>
 
     <li class="page-item me-2 <?= (!$number && !$client_name && !$situacao) ? 'disabled' : '' ?>">
-      <a class="page-link" href="list.php">Clear Search</a>
+      <a class="page-link" href="list.php">Clear</a>
     </li>
   </ul>
 </nav>
@@ -112,11 +112,11 @@
 <nav class="my-4" aria-label="Page navigation example">
   <ul class="pagination">
     <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
-      <a class="page-link" href="?page=<?php echo $page - 1?>">Previous</a>
+      <a class="page-link" href="?page=<?php echo $page - 1?>">Anterior</a>
     </li>
 
     <li class="page-item me-2 <?= ($response->retorno->numero_paginas == $page) ? 'disabled' : '' ?>">
-      <a class="page-link" href="?page=<?php echo $page + 1?>">Next</a>
+      <a class="page-link" href="?page=<?php echo $page + 1?>">Próximo</a>
     </li>
 
     <li class="page-item">
@@ -126,7 +126,7 @@
             <label for="number" class="col-form-label">Numero</label>
           </div>
           <div class="col-auto">
-            <input type="text" id="number" name="number" class="form-control" value="<?= $number ?>">
+            <input type="text" id="number" name="number" class="form-control" value="<?= $number ?>" style="width: 80px" >
           </div>
 
           <div class="col-auto">
@@ -164,7 +164,7 @@
     </li>
 
     <li class="page-item me-2 <?= (!$number && !$client_name && !$situacao) ? 'disabled' : '' ?>">
-      <a class="page-link" href="list.php">Clear Search</a>
+      <a class="page-link" href="list.php">Clear</a>
     </li>
   </ul>
 </nav>
