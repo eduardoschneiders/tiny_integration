@@ -15,12 +15,62 @@
   }
 ?>
 
-<h1>Romaneio pedido <?= $response->retorno->pedido->numero ?></h1>
-<a href="javascript:history.back()" class="btn btn-outline-success">Voltar</a>
-<a href="talao.php?id=<?= $_GET['id'] ?>" class="btn btn-outline-success">Talão</a>
+<div class="mb-5">
+  <h1>Romaneio pedido <?= $response->retorno->pedido->numero ?></h1>
+  <a href="javascript:history.back()" class="btn btn-outline-success">Voltar</a>
+  <a href="talao.php?id=<?= $_GET['id'] ?>" class="btn btn-outline-success">Talão</a>
+</div>
+
+
+
+<div class="mb-5">
+  <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']); ?>">
+    <label>
+        <input type="checkbox" name="box_sizes[]" value="18" <?php echo (!isset($_POST['box_sizes']) || in_array(18, $_POST['box_sizes'])) ? 'checked' : ''; ?>> 18
+    </label>
+    <label>
+        <input type="checkbox" name="box_sizes[]" value="12" <?php echo (!isset($_POST['box_sizes']) || in_array(12, $_POST['box_sizes'])) ? 'checked' : ''; ?>> 12
+    </label>
+    <label>
+        <input type="checkbox" name="box_sizes[]" value="6" <?php echo (!isset($_POST['box_sizes']) || in_array(6, $_POST['box_sizes'])) ? 'checked' : ''; ?>> 6
+    </label>
+    <label>
+        <input type="checkbox" name="box_sizes[]" value="3" <?php echo (!isset($_POST['box_sizes']) || in_array(3, $_POST['box_sizes'])) ? 'checked' : ''; ?>> 3
+    </label>
+    <button type="submit">Usar estas caixas</button>
+  </form>
+
+</div>
+
+
+
+
+
 
 <?php
+  // Retrieve selected box sizes from POST request
+  if (isset($_POST['box_sizes'])) {
+      $boxSizes = array_map('intval', $_POST['box_sizes']); // Convert to integers
+      rsort($boxSizes); // Sort in descending order for best-fit logic
+  } else {
+      $boxSizes = [18, 12, 6, 3]; // Default box sizes if none selected
+  }
+
+  // Validate that at least one box size is selected
+  if (empty($boxSizes)) {
+      die("Error: Please select at least one box size.");
+  }
+?>
+
+
+
+
+<?php
+  $pedido = $response->retorno->pedido->numero;
+  $cliente = $response->retorno->pedido->cliente->nome;
+
   $products = [];
+  $boxes = [];
   $sizes = [];
 
   foreach ($response->retorno->pedido->itens as $item) {
@@ -35,7 +85,93 @@
     $products[$cleaned_name][$number] = (int)$item->item->quantidade;
   }
 
-  $sizes = array_unique($sizes)
+  $sizes = array_unique($sizes);
+
+
+
+
+
+
+// Box size options (sorted in descending order)
+// $boxSizes = [18, 12, 6, 3];
+$boxes = [];
+$currentBox = [];
+$currentCount = 0;
+
+// Function to find the largest possible box size
+function getLargestPossibleBoxSize($totalRemainingProducts, $boxSizes) {
+    foreach ($boxSizes as $size) {
+        if ($totalRemainingProducts <= $size) {
+            return $size; // Use the smallest box that can fit the remaining products
+        }
+    }
+    return max($boxSizes); // Default to the largest box if none fit exactly
+}
+
+
+// Ensure all products have all sizes
+foreach ($products as $productName => $sizeQuantities) {
+    foreach ($sizes as $size) {
+        if (!isset($sizeQuantities[$size])) {
+            $sizeQuantities[$size] = 0; // Add missing size with quantity 0
+        }
+    }
+    ksort($sizeQuantities); // Sort sizes for consistency
+    $products[$productName] = $sizeQuantities;
+}
+
+$totalProducts = 0;
+foreach ($products as $productName => $sizeQuantities) {
+    foreach ($sizeQuantities as $quantity) {
+        $totalProducts += $quantity; // Calculate the total number of products
+    }
+}
+
+foreach ($products as $productName => $sizeQuantities) {
+    $normalizedSizes = array_fill_keys($sizes, 0);
+    foreach ($sizeQuantities as $size => $quantity) {
+        $normalizedSizes[$size] = $quantity;
+    }
+
+    foreach ($normalizedSizes as $size => $quantity) {
+        while ($quantity > 0) {
+            // Update the total amount of remaining products
+            $totalRemainingProducts = $totalProducts;
+
+            // Find the largest possible box size for the remaining products
+            $largestBoxCapacity = getLargestPossibleBoxSize($totalRemainingProducts, $boxSizes);
+            echo 'Total: '.$totalRemainingProducts.'<br>';
+
+            $toAdd = min($quantity, $largestBoxCapacity - $currentCount);
+
+            if (!isset($currentBox['products'][$productName])) {
+                $currentBox['products'][$productName] = array_fill_keys($sizes, 0);
+            }
+
+            $currentBox['products'][$productName][$size] += $toAdd;
+            $currentCount += $toAdd;
+            $quantity -= $toAdd;
+            $totalProducts -= $toAdd; // Decrement total remaining products
+
+            // Add metadata to the box
+            $currentBox['box_size'] = $largestBoxCapacity;
+            $currentBox['total_products'] = $currentCount;
+
+            if ($currentCount === $largestBoxCapacity) {
+                $boxes[] = $currentBox;
+                $currentBox = [];
+                $currentCount = 0;
+            }
+        }
+    }
+}
+
+// Add the last box if it's not empty
+if (!empty($currentBox)) {
+    $boxes[] = $currentBox;
+}
+
+
 ?>
 
 <?php
@@ -43,6 +179,126 @@
     echo "<h7>Quantidade produtos:" . count($products) . "</h7>";
   }
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+  // Mocked data for "Pedido" and "Cliente"
+  // $pedido = 721;
+  // $cliente = "Mukako Store";
+
+  // HTML structure for boxes
+foreach ($boxes as $index => $box) {
+    $volume = ($index + 1) . "/" . count($boxes); // Current box and total boxes
+    $boxSize = $box['box_size']; // Box size
+    $totalPairs = $box['total_products']; // Total products in the box
+
+    // Start the main table
+    echo "<table class='table table-bordered' style='width: 100%; text-align: left; margin-bottom: 20px;'>";
+
+    // Pedido and Cliente row
+    echo "
+        <tr>
+            <td><strong>Pedido:</strong> $pedido</td>
+            <td colspan='6'><strong>Cliente:</strong> $cliente</td>
+        </tr>
+    ";
+
+    // Start the "Referencia" table
+    echo '<tr><td colspan="7" style="padding: 0;">';
+    echo '<table class="table table-bordered" style="width: 100%; text-align: left;">';
+
+    // Header row for sizes in the "Referencia" table
+    echo "
+        <tr>
+            <td><strong>Referencia:</strong></td>";
+    foreach ($sizes as $size) {
+        echo "<td><strong>$size</strong></td>";
+    }
+    echo "</tr>";
+
+    // Products and their sizes in the "Referencia" table
+    foreach ($box['products'] as $productName => $sizeQuantities) {
+        echo "<tr><td>$productName</td>";
+        foreach ($sizes as $size) {
+            echo "<td>" . $sizeQuantities[$size] . "</td>";
+        }
+        echo "</tr>";
+    }
+
+    // Close the "Referencia" table
+    echo '</table>';
+    echo '</td></tr>';
+
+    // Footer row for volume, total pairs, and box size on the same line
+    echo "
+        <tr>
+            <td colspan='7'>
+                <strong>Volume:</strong> $volume |
+                <strong>Total de pares:</strong> $totalPairs |
+                <strong>Tamanho da caixa:</strong> $boxSize
+            </td>
+        </tr>
+    ";
+
+    // Close the main table
+    echo '</table>';
+
+    // Add an <hr> between tables
+    if ($index < count($boxes) - 1) {
+        echo "<hr  class='my-5'>";
+    }
+}
+
+
+
+
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php die()?>
 
 <hr>
 
